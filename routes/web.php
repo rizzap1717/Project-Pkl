@@ -8,6 +8,7 @@ use App\Http\Controllers\KategoriController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\IsAdmin;
+use App\Models\Kategori;
 use App\Models\Laporan;
 use App\Models\Menu;
 use App\Models\Pembayaran;
@@ -55,6 +56,11 @@ Route::get('data', function () {
     return view('data')->name('data');
 });
 Route::get('/show-modal/{id}', 'App\Http\Controllers\FrontendController@showModal');
+
+Route::delete('/menu/{id}', [MenuController::class, 'destroy'])->name('menu.destroy');
+
+Route::delete('/kategori/{id}', [KategoriController::class, 'destroy'])->name('kategori.destroy');
+
 
 
 

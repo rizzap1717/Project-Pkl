@@ -103,25 +103,48 @@ class menuController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,menu $menu)
-    {
-        $menu->menu = $request->menu;
-        $menu->kategori = $request->kategori;
-        $menu->harga = $request->harga;
-        $menu->gambar = $request->gambar;
+    public function update(Request $request, Menu $menu)
+{
+    $request->validate([
+        'menu' => 'required|unique:menus,menu,' . $menu->id,
+        'id_kategori' => 'required',
+        'harga' => 'required|numeric',
+        'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    ],
+    [
+        'menu.required' => 'Nama harus diisi',
+        'menu.unique' => 'Menu dengan nama tersebut sudah ada sebelumnya.',
+        'id_kategori.required' => 'Kategori harus diisi',
+        'harga.required' => 'Harga harus diisi',
+        'harga.numeric' => 'Harga harus berupa angka',
+        'gambar.image' => 'File harus berupa gambar',
+        'gambar.mimes' => 'Gambar harus berupa file dengan tipe: jpeg, png, jpg, gif, svg',
+        'gambar.max' => 'Ukuran gambar tidak boleh lebih dari 2MB',
+    ]);
 
-        // delete img
-        if ($request->hasFile('gambar')) {
-            $menu ->deleteImage();
-            $img = $request->file('gambar');
-            $name = rand(1000, 9999) . $img->getClientOriginalName();
-            $img->move('images/menu', $name);
-            $menu->gambar = $name;
+    $menu->menu = $request->menu;
+    $menu->id_kategori = $request->id_kategori;
+    $menu->harga = $request->harga;
+
+    if ($request->hasFile('gambar')) {
+        // Hapus gambar lama
+        if ($menu->gambar && file_exists(public_path('images/menu/' . $menu->gambar))) {
+            unlink(public_path('images/menu/' . $menu->gambar));
         }
 
-        $menu->save();
-        return redirect()->route('menu.index')->with('success', 'Data berhasil diubah');
+        // Unggah gambar baru
+        $img = $request->file('gambar');
+        $name = rand(1000, 9999) . '_' . $img->getClientOriginalName();
+        $img->move(public_path('images/menu'), $name);
+        $menu->gambar = $name;
     }
+
+    $menu->save();
+
+    return redirect()->route('menu.index')->with('success', 'Data berhasil diubah');
+}
+
+
     
 
     /**
@@ -131,9 +154,20 @@ class menuController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
-        $menu = Menu::FindOrFail($id);
-        $menu->delete();
-        return redirect()->route('menu.index')->with('success', 'Data berhasil dihapus');
+{
+    // Cari menu berdasarkan ID yang diberikan
+    $menu = Menu::findOrFail($id);
+
+    // Hapus gambar jika ada
+    if ($menu->gambar && file_exists(public_path('images/menu/' . $menu->gambar))) {
+        unlink(public_path('images/menu/' . $menu->gambar));
     }
+
+    // Hapus menu dari database
+    $menu->delete();
+
+    return redirect()->route('menu.index')->with('success', 'Data berhasil dihapus');
+}
+    
+
 }

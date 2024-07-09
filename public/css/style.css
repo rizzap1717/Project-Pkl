@@ -56,6 +56,14 @@
     font-weight: bold;
 }
 
+.total-container {
+    margin-top: 10px;
+    font-size: 1.2em;
+    text-align: left; /* Ubah ini dari 'right' menjadi 'left' */
+    width: 100%; /* Pastikan lebar 100% untuk menempatkan teks di sebelah kiri */
+}
+
+
 .close:hover,
 .close:focus {
     color: black;
@@ -80,11 +88,20 @@
 }
 
 /* Style the image in the modal */
+.modal-flex-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .modal-img {
-    display: block;
-    margin: 0 auto;
-    max-width: 100%;
+    max-width: 50%; /* Atur ukuran gambar sesuai kebutuhan */
     height: auto;
+}
+
+.modal-text {
+    flex-grow: 1; /* Agar teks dapat mengisi ruang yang tersedia */
+    padding: 0 20px; /* Atur padding sesuai kebutuhan */
 }
 
 /* Style the text below the image in the modal */

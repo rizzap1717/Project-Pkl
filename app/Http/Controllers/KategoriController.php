@@ -122,8 +122,17 @@ class KategoriController extends Controller
      */
     public function destroy($id)
     {
-        $kategori = kategori::FindOrFail($id);
+        // Cari kategori berdasarkan ID yang diberikan
+        $kategori = Kategori::findOrFail($id);
+    
+        // Hapus gambar jika ada
+        if ($kategori->gambar && file_exists(public_path('images/kategori/' . $kategori->gambar))) {
+            unlink(public_path('images/kategori/' . $kategori->gambar));
+        }
+    
+        // Hapus kategori dari database
         $kategori->delete();
+    
         return redirect()->route('kategori.index')->with('success', 'Data berhasil dihapus');
     }
 }

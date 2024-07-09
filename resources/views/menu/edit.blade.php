@@ -37,7 +37,7 @@
                 <div class="col-md-4x">
                     <label for="input13" class="form-label">Foto</label>
                     <div class="position-relative input-icon">
-                        <input class="form-control mb-3" type="file" name="foto" required>
+                        <input class="form-control mb-3" type="file" name="gambar" required>
                     </div>
                 </div>
 
