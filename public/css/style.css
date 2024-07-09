@@ -1,0 +1,144 @@
+
+.search-bar .position-relative {
+    display: flex;
+    align-items: center;
+}
+
+.search-bar .position-relative input {
+    padding-left: 2.5rem;
+}
+
+.search-bar .position-relative .fa-search {
+    position: absolute;
+    left: 1rem;
+    color: #aaa;
+}
+.food-item, .drink-item {
+    display: none;
+}
+.card_img {
+    width: 500px;
+    height: 200px;
+}
+
+
+/* The Modal (background) */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding-top: 60px;
+}
+
+/* Modal Content */
+.modal-content {
+    position: relative;
+    background-color: #ffffffb5;
+    margin: auto;
+    padding: 20px;
+    border: 1prgb(43, 0, 255)lid #ffffff;
+    width: 80%;
+    max-width: 600px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.open-modal {
+    cursor: pointer;
+    width: 200px;
+    /* Adjust width as needed */
+    max-width: 250px;
+    /* Set maximum width for image */
+    height: 200px;
+    display: block;
+    margin: 10px auto;
+}
+
+.image-text {
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* Style the image in the modal */
+.modal-img {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+}
+
+/* Style the text below the image in the modal */
+.modal-text {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.order-form {
+    display: inline-block;
+    margin-top: 10px;
+    text-align: left;
+    /* Align text left inside the form */
+}
+
+.small-input {
+    width: 50px;
+    margin-left: 10px;
+    margin-right: 10px;
+    text-align: center;
+}
+
+.order-form {
+    display: inline-block;
+    padding: 5px 10px;
+    margin-top: 10px;
+}
+
+.small-button {
+    display: inline-block;
+    padding: 5px 10px;
+    margin-top: 10px;
+    font-size: 14px;
+    /* Smaller font size */
+    cursor: pointer;
+    background-color: #4CAF50 !important;
+    /* Green background with !important */
+    color: white !important;
+    /* White text with !important */
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+}
+
+.small-button:hover {
+    background-color: #45a049 !important;
+    /* Slightly darker green on hover with !important */
+}
+.button-group {
+    display: flex;
+    justify-content: flex-start; /* Posisi tombol ke kiri */
+    gap: 10px; /* Spasi antara tombol */
+    flex-wrap: wrap; /* Agar tombol bisa dibungkus ke baris baru pada layar kecil */
+}
+.button-group .btn {
+    margin-bottom: 10px; /* Spasi bawah untuk tombol */
+}
