@@ -82,7 +82,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title mb-4 fw-bold">Order Here</h4>
-                            <div style="overflow-x: hidden; overflow-y: auto; max-height: 300px;">
+                                <div style="overflow-x: hidden; overflow-y: scroll; width:107%; height:400px; border:1px solid white">
                                 <table class="table align-middle" style="background-color: rgb(174, 174, 173)">
                                     <thead class="table-secondary">
                                         <tr>
@@ -223,13 +223,20 @@
 
                         var orderTableBody = document.getElementById("order-table-body");
 
+                        function formatRupiah(number) {
+                            return new Intl.NumberFormat('id-ID', {
+                                style: 'currency',
+                                currency: 'IDR'
+                            }).format(number);
+                        }
+
                         // Create new table row
                         var newRow = document.createElement("tr");
 
                         newRow.innerHTML = `
                     <td><input type="checkbox" class="order-checkbox"></td>
                     <td>${productName}</td>
-                    <td>${productPrice.toFixed(2)}</td>
+                    <td>${formatRupiah(productPrice.toFixed(2))}</td>
                     <td>${quantity}</td>
                     <td>${subTotal.toFixed(2)}</td>
                     <td>10%</td>

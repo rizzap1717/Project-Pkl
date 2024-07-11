@@ -66,6 +66,4 @@ Route::delete('/kategori/{id}', [KategoriController::class, 'destroy'])->name('k
 
 
 
-
-
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');       
