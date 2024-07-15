@@ -27,14 +27,12 @@
 
                 <div class="col-md-12">
                     <label for="input19" class="form-label">Jenis Kelamin</label>
-                    <div class="position-relative">
-                        <input type="text" name="jenis_kelamin" class="form-control" value="{{$user->jenis_kelamin}}" disabled>
-                    </div>
-                    {{-- <select id="input19" name="jenis_kelamin" class="form-select">
+                    
+                    <select id="input19" name="jenis_kelamin" class="form-select">
                         <option selected="">Pilih...</option>
                         <option>Laki-Laki</option>
                         <option>Perempuan</option>
-                    </select> --}}
+                    </select>
                 </div>
 
                 <div class="col-md-4x">

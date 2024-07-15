@@ -41,13 +41,16 @@
                     <td>
                         
                         <a href="{{ route('user.edit', $data->id) }}" class="btn btn-grd btn-warning px-5">Edit</a>
-                        <a class="btn btn-grd btn-danger px-5" href="{{ route('user.destroy', $data->id) }}" onclick="event.preventDefault(); document.getElementById('destroy-form').submit();return confirm('Apakah anda yakin ingin menghapus??')">Hapus</a>
+                        <a class="btn ripple btn-danger px-5" href="#" onclick="event.preventDefault();
+                        document.getElementById('delete-form-{{ $data->id }}').submit();"
+                        onclick="return confirm('Apakah anda yakin??')">Hapus</a>
 
-                        <form id="destroy-form" action="{{ route('user.destroy', $data->id) }}"
-                            method="POST" class="d-none">
-                            @method('DELETE')
-                            @csrf
-                        </form>
+                    <form id="delete-form-{{ $data->id }}" action="{{ route('user.destroy', $data->id) }}"
+                        method="POST" style="display: none;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Hapus</button>
+                    </form>
                     </td>
                 </tr>
 

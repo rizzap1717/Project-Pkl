@@ -8,6 +8,9 @@ use App\Http\Controllers\KategoriController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\IsAdmin;
+use App\Http\Controllers\RekapanController;
+use App\Http\Controllers\KasirController;
+use App\Http\Controllers\FilterController;
 use App\Models\Kategori;
 use App\Models\Laporan;
 use App\Models\Menu;
@@ -45,8 +48,11 @@ Route::group(['prefix' => 'admin' , 'middleware' => ['auth', IsAdmin::class]], f
 
     Route::resource('menu', MenuController::class);
 
-    Route::resource('pembayaran', pembayaranController::class);
+    Route::resource('pembayaran', PembayaranController::class);
+
 });
+Route::post('/pembayaran/store', [PembayaranController::class, 'store'])->name('pembayaran.store');
+
 
 Route::resource('user', UserController::class);
 
@@ -59,10 +65,19 @@ Route::get('/show-modal/{id}', 'App\Http\Controllers\FrontendController@showModa
 
 Route::delete('/menu/{id}', [MenuController::class, 'destroy'])->name('menu.destroy');
 
+Route::delete('/user/{id}', [UserController::class, 'destroy'])->name('user.destroy');
+
 Route::delete('/kategori/{id}', [KategoriController::class, 'destroy'])->name('kategori.destroy');
 
 
+Route::group(['prefix' => 'kasir', 'middleware' => ['auth']], function () {
+    Route::get('', [KasirController::class, 'menampilkan'])->name('kasir');
+    Route::get('filter', [RekapanController::class, 'filter'])->name('filter');
+    Route::get('rekapan', [RekapanController::class, 'index'])->name('rekapan');
+    Route::get('bayar', [KasirController::class, 'bayar'])->name('bayar');
+    Route::get('cetak-struk', [RekapanController::class, 'cetakStruk'])->name('cetak-struk');
 
+});
 
 
 

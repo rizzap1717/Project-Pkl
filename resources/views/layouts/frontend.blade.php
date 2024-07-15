@@ -26,7 +26,8 @@
                         <h1 class="fw-bold">KASIR</h1>
                     </div>
                     <h5 class="user-name mb-0 fw-bold">Admin &nbsp;</h5>
-                    <img src="https://placehold.co/110x110/png" class="rounded-circle" width="45" height="45" alt="">
+                    <img src="https://placehold.co/110x110/png" class="rounded-circle" width="45" height="45"
+                        alt="">
                 </div>
             </div>
         </div>
@@ -37,7 +38,8 @@
                 <div class="col-12 col-lg-8 d-flex">
                     <!-- Main content -->
                     <div class="card flex-grow-1 mb-4">
-                        <div style="overflow-x: hidden; overflow-y: scroll; width:100%; height:650px; border:1px solid white">
+                        <div
+                            style="overflow-x: hidden; overflow-y: scroll; width:100%; height:650px; border:1px solid white">
                             <div class="card-body">
                                 <h2 class="fw-bold">MENU</h2>
                                 <div class="container-fluid">
@@ -80,7 +82,8 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title mb-4 fw-bold">Order Here</h4>
-                            <div style="overflow-x: hidden; overflow-y: scroll; width:100%; height:400px; border:1px solid white">
+                            <div
+                                style="overflow-x: hidden; overflow-y: scroll; width:100%; height:400px; border:1px solid white">
                                 <table class="table align-middle" style="background-color: rgb(174, 174, 173)">
                                     <thead class="table-secondary">
                                         <tr>
@@ -89,7 +92,6 @@
                                             <th>Harga</th>
                                             <th>Qty</th>
                                             <th>Sub Total</th>
-                                            <th>Pajak</th>
                                             <th>Total</th>
                                         </tr>
                                     </thead>
@@ -100,7 +102,7 @@
                             </div>
                             <!-- Pajak -->
                             <div class="total-container">
-                                <strong>Pajak 10%: </strong><span id="tax-total">Rp: 0</span>
+                                <strong>Pajak: </strong><span id="tax-total">Rp: 0</span>
                             </div>
                             <!-- Total Keseluruhan -->
                             <div class="total-container">
@@ -109,9 +111,13 @@
                         </div>
                         <!-- Button group -->
                         <div class="d-grid gap-2 mb-3">
+
                             <button id="new-order-btn" type="button" class="btn btn-primary">Baru</button>
+
                             <button id="cancel-btn" type="button" class="btn btn-danger">Batal</button>
-                            <button type="button" class="btn btn-info">Rekapan</button>
+
+                            <a href="{{ route('rekapan') }}" class="btn btn-primary">Rekapan</a>
+
                             <button id="pay-btn" type="button" class="btn btn-warning">Bayar</button>
                         </div>
                     </div>
@@ -129,8 +135,8 @@
                                 <p>Harga : <span id="modal-price"></span></p>
                                 <form id="order-form">
                                     <label for="quantity">Jumlah Pesanan:</label>
-                                    <input type="number" id="quantity" name="quantity" min="1" value="1"
-                                        class="small-input">
+                                    <input type="number" id="quantity" name="quantity" min="1"
+                                        value="1" class="small-input">
                                     <br><br>
                                     <button type="submit" class="small-button">Tambahkan</button>
                                 </form>
@@ -140,23 +146,32 @@
                 </div>
 
                 <!-- Modal Pembayaran -->
-                <div id="paymentModal" class="modal">
-                    <div class="modal-content">
-                        <span class="close-payment"></span>
-                        <div class="modal-text">
-                            <p>Total Keseluruhan: <span id="modal-grand-total"></span></p>
-                            <form id="payment-form">
+                <form id="payment-form" class="row g-3" method="POST" action="{{ route('pembayaran.store') }}">
+                    @csrf
+                    <div id="paymentModal" class="modal">
+                        <div class="modal-content">
+                            <span class="close-payment"></span>
+                            <div class="modal-text">
+                                <p>Total Keseluruhan: <span id="modal-grand-total"></span></p>
+                                <input type="hidden" name="menu" id="menu-id">
+                                <input type="hidden" name="subtotal" id="subtotal-amount">
+                                <input type="hidden" name="pajak" id="tax-amount">
+                                <input type="hidden" name="total" id="total-amount">
                                 <label for="payment-amount">Jumlah Pembayaran:</label>
                                 <input type="number" id="payment-amount" name="payment-amount">
                                 <br>
                                 <button type="button" id="process-btn" class="small-button">Proses</button>
                                 <p>Kembalian: <span id="change-amount">Rp: 0</span></p>
-                            </form>
-
-                            <button type="button" class="btn btn-danger">Bayar</button>
+                                <input type="hidden" name="kembali" id="change-amount-input">
+                                <h6 class="mb-0 fw-bold">Nama Kasir: <input class="inputan-admin " name="id_user" value="{{ Auth::user()->name}}"></h6>
+                                <br>
+                                <button type="submit" class="btn btn-danger" id="updateGrandTotal">Bayar</button>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </form>
+                
+
 
                 <script>
                     // Get the modal
@@ -238,7 +253,6 @@
                     <td>${formatRupiah(productPrice.toFixed(2))}</td>
                     <td>${quantity}</td>
                     <td>${subTotal.toFixed(2)}</td>
-                    <td>10%</td>
                     <td>${subTotal.toFixed(2)}</td>
                 `;
 
@@ -324,6 +338,7 @@
                     });
 
                     // Function to update grand total and tax
+                    // Function to update grand total and tax
                     function updateGrandTotal() {
                         var orderTableBody = document.getElementById("order-table-body");
                         var rows = orderTableBody.querySelectorAll('tr');
@@ -341,7 +356,37 @@
 
                         document.getElementById("tax-total").textContent = totalTax.toFixed(2);
                         document.getElementById("grand-total").textContent = grandTotal.toFixed(2);
+
+                        // Set values to hidden inputs
+                        document.getElementById("subtotal-amount").value = (grandTotal - totalTax).toFixed(2);
+                        document.getElementById("tax-amount").value = totalTax.toFixed(2);
+                        document.getElementById("total-amount").value = grandTotal.toFixed(2);
                     }
+
+                    // Process button event listener in payment modal
+                    var processBtn = document.getElementById("process-btn");
+
+                    processBtn.addEventListener("click", function() {
+                        var grandTotal = parseFloat(document.getElementById("modal-grand-total").textContent);
+                        var paymentAmount = parseFloat(document.getElementById("payment-amount").value);
+                        var changeAmount = paymentAmount - grandTotal;
+
+                        document.getElementById("change-amount").textContent = changeAmount.toFixed(2);
+                        document.getElementById("change-amount-input").value = changeAmount.toFixed(2);
+                    });
+
+                    // Pay button event listener
+                    var payBtn = document.getElementById("pay-btn");
+
+                    payBtn.addEventListener("click", function() {
+                        var grandTotal = document.getElementById("grand-total").textContent;
+                        document.getElementById("modal-grand-total").textContent = grandTotal;
+
+                        // Assuming menu ID is stored somewhere or set a default value
+                        document.getElementById("menu-id").value = "1"; // Replace "1" with the actual menu ID
+
+                        paymentModal.style.display = "block";
+                    });
                 </script>
 
                 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
