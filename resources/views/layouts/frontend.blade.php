@@ -26,8 +26,7 @@
                         <h1 class="fw-bold">KASIR</h1>
                     </div>
                     <h5 class="user-name mb-0 fw-bold">Admin &nbsp;</h5>
-                    <img src="https://placehold.co/110x110/png" class="rounded-circle" width="45" height="45"
-                        alt="">
+                    <img src="https://placehold.co/110x110/png" class="rounded-circle" width="45" height="45" alt="">
                 </div>
             </div>
         </div>
@@ -38,8 +37,7 @@
                 <div class="col-12 col-lg-8 d-flex">
                     <!-- Main content -->
                     <div class="card flex-grow-1 mb-4">
-                        <div
-                            style="overflow-x: hidden; overflow-y: scroll; width:100%; height:650px; border:1px solid white">
+                        <div style="overflow-x: hidden; overflow-y: scroll; width:100%; height:650px; border:1px solid white">
                             <div class="card-body">
                                 <h2 class="fw-bold">MENU</h2>
                                 <div class="container-fluid">
@@ -82,7 +80,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title mb-4 fw-bold">Order Here</h4>
-                                <div style="overflow-x: hidden; overflow-y: scroll; width:107%; height:400px; border:1px solid white">
+                            <div style="overflow-x: hidden; overflow-y: scroll; width:100%; height:400px; border:1px solid white">
                                 <table class="table align-middle" style="background-color: rgb(174, 174, 173)">
                                     <thead class="table-secondary">
                                         <tr>
@@ -99,6 +97,10 @@
                                         <!-- Isi tabel order -->
                                     </tbody>
                                 </table>
+                            </div>
+                            <!-- Pajak -->
+                            <div class="total-container">
+                                <strong>Pajak 10%: </strong><span id="tax-total">Rp: 0</span>
                             </div>
                             <!-- Total Keseluruhan -->
                             <div class="total-container">
@@ -218,10 +220,11 @@
                         var quantity = parseInt(document.getElementById("quantity").value);
 
                         var subTotal = productPrice * quantity;
-                        var tax = subTotal * 0.1; // Assuming 10% tax
-                        var total = subTotal + tax;
 
                         var orderTableBody = document.getElementById("order-table-body");
+
+                        // Create new table row
+                        var newRow = document.createElement("tr");
 
                         function formatRupiah(number) {
                             return new Intl.NumberFormat('id-ID', {
@@ -229,10 +232,6 @@
                                 currency: 'IDR'
                             }).format(number);
                         }
-
-                        // Create new table row
-                        var newRow = document.createElement("tr");
-
                         newRow.innerHTML = `
                     <td><input type="checkbox" class="order-checkbox"></td>
                     <td>${productName}</td>
@@ -240,7 +239,7 @@
                     <td>${quantity}</td>
                     <td>${subTotal.toFixed(2)}</td>
                     <td>10%</td>
-                    <td>${total.toFixed(2)}</td>
+                    <td>${subTotal.toFixed(2)}</td>
                 `;
 
                         // Append the new row to the table body
@@ -324,18 +323,23 @@
                         // Additional logic can be added here, such as closing the modal or updating order status
                     });
 
-                    // Function to update grand total
+                    // Function to update grand total and tax
                     function updateGrandTotal() {
                         var orderTableBody = document.getElementById("order-table-body");
                         var rows = orderTableBody.querySelectorAll('tr');
                         var grandTotal = 0;
+                        var totalTax = 0;
 
                         rows.forEach(function(row) {
-                            var totalCell = row.cells[6]; // Total column
-                            var total = parseFloat(totalCell.textContent);
-                            grandTotal += total;
+                            var subTotalCell = row.cells[4]; // Subtotal column
+                            var subTotal = parseFloat(subTotalCell.textContent);
+                            grandTotal += subTotal;
                         });
 
+                        totalTax = grandTotal * 0.1;
+                        grandTotal += totalTax;
+
+                        document.getElementById("tax-total").textContent = totalTax.toFixed(2);
                         document.getElementById("grand-total").textContent = grandTotal.toFixed(2);
                     }
                 </script>
